@@ -7,7 +7,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon -r dotenv/config src/index.js",
+    "test": "jest"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
