@@ -21,7 +21,7 @@ const startServer = async () => {
       throw new ApiError(500, "Server failed to start");
     });
 
-    // Sent when you press Ctrl+C in the terminal to interrupt the process SIGINT -> Signal Interrupt.
+    // when you press Ctrl+C in the terminal to interrupt the process SIGINT -> Signal Interrupt.
     process.on("SIGINT", () => {
       console.log("🛑 SIGINT received. Closing server.");
       server.close(() => process.exit(0));
