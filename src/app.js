@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import session from "express-session"; // ✅ Add this
 import passport from "passport"; // ✅ Needed in main file too
+import MongoStore from "connect-mongo";
 
 import strategy from "./utils/googleStrategy.js";
 
@@ -27,8 +28,12 @@ app.use(
     secret: process.env.SESSION_SECRET || "defaultSecret", // secure in .env
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI, // ✅ Use your MongoDB connection string here
+      collectionName: "sessions",
+    }),
     cookie: {
-      secure: false, // true in production with HTTPS
+      secure: true, // ✅ Set to true when using HTTPS in production
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
