@@ -3,7 +3,7 @@ import googleStra from "passport-google-oauth20";
 import passport from "passport";
 import googleAuth from "../middlewares/googleAuth.js";
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
 const googleStrategy = googleStra.Strategy;
 
