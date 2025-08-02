@@ -1,19 +1,17 @@
-import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import session from "express-session"; // ✅ Add this
 import passport from "passport"; // ✅ Needed in main file too
-import MongoStore from "connect-mongo";
 
 import strategy from "./utils/googleStrategy.js";
-dotenv.config({ quiet: true });
+
 const app = express();
 
 // cors implementation
 app.use(
   cors({
-    origin: process.env.ORIGIN || "https://audio-textify-client.vercel.app",
+    origin: process.env.ORIGIN,
     credentials: true,
   })
 );
@@ -29,12 +27,8 @@ app.use(
     secret: process.env.SESSION_SECRET || "defaultSecret", // secure in .env
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_URI, // ✅ Use your MongoDB connection string here
-      collectionName: "sessions",
-    }),
     cookie: {
-      secure: true, // ✅ Set to true when using HTTPS in production
+      secure: false, // true in production with HTTPS
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
