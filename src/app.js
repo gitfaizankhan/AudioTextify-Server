@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -6,7 +7,7 @@ import passport from "passport"; // ✅ Needed in main file too
 import MongoStore from "connect-mongo";
 
 import strategy from "./utils/googleStrategy.js";
-
+dotenv.config({ quiet: true });
 const app = express();
 
 // cors implementation
