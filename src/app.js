@@ -13,7 +13,7 @@ const app = express();
 // cors implementation
 app.use(
   cors({
-    origin: process.env.ORIGIN,
+    origin: process.env.ORIGIN || "https://audio-textify-client.vercel.app",
     credentials: true,
   })
 );
