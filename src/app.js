@@ -55,5 +55,4 @@ import errorHandler from "./utils/errorHandler.js";
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/audio", transcribe);
 
-app.use(errorHandler);
 export { app };
