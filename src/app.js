@@ -50,7 +50,6 @@ strategy(app);
 // Routes
 import userRouter from "./routes/user.routes.js";
 import transcribe from "./routes/transcribe.routes.js";
-import errorHandler from "./utils/errorHandler.js";
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/audio", transcribe);
