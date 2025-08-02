@@ -1,6 +1,9 @@
+import dotenv from "dotenv";
 import googleStra from "passport-google-oauth20";
 import passport from "passport";
 import googleAuth from "../middlewares/googleAuth.js";
+
+dotenv.config();
 
 const googleStrategy = googleStra.Strategy;
 
