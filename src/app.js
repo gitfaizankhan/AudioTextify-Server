@@ -11,7 +11,7 @@ const app = express();
 // cors implementation
 app.use(
   cors({
-    origin: "http://localhost:5173", // frontend url
+    origin: "https://audio-textify-client.vercel.app", // frontend url
     credentials: true,
   })
 );

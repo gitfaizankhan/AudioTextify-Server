@@ -5,7 +5,7 @@ import { ApiError } from "./utils/ApiError.js";
 
 dotenv.config({ quiet: true });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8000;
 
 const startServer = async () => {
   try {
