@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
 
 const sendMail = async (data) => {
-  console.log("Data: ", data);
   try {
     const transport = nodemailer.createTransport({
       service: "gmail",
@@ -21,7 +20,6 @@ const sendMail = async (data) => {
     const success = await transport.sendMail(mailOptions);
     return success;
   } catch (error) {
-    console.log("Error sending email: ", error.message);
     throw new Error("Something went wrong please try again");
   }
 };

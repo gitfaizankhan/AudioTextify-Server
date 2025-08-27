@@ -70,7 +70,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
 // Login User
 const loginUser = asyncHandler(async (req, res) => {
-  // console.log(req.body);
   // 1. Get user details from req.body
   const { email, password } = req.body;
 
@@ -251,7 +250,6 @@ const changeCurrentUserPassword = asyncHandler(async (req, res) => {
 
 // Get Current User
 const getCurrentUser = asyncHandler(async (req, res) => {
-  console.log(req.user);
   return res
     .status(200)
     .json(new ApiResponse(200, req.user, "Current user fetched successfully"));
@@ -289,7 +287,6 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 
 const forgotPassword = async (req, res, next) => {
   const { email } = req.body;
-  console.log(email);
   try {
     const user = await User.findOne({ email });
 

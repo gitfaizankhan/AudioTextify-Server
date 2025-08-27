@@ -29,7 +29,6 @@ const transcribeAudio = async (req, res) => {
     });
 
     python.stderr.on("data", (err) => {
-      console.error("Python Error:", err.toString());
     });
 
     python.on("close", async (code) => {
