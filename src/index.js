@@ -1,63 +1,41 @@
 import dotenv from "dotenv";
-import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import session from "express-session";
-import passport from "passport";
-
-import strategy from "./utils/googleStrategy.js";
+import connectDB from "./db/connectDB.js";
+import { app } from "./app.js";
+import { ApiError } from "./utils/ApiError.js";
 
 dotenv.config({ quiet: true });
 
-const app = express();
+const PORT = process.env.PORT;
 
-// ✅ Allow multiple origins from .env
-const allowedOrigins = process.env.ORIGIN.split(",");
+const startServer = async () => {
+  try {
+    await connectDB();
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
+    const server = app.listen(PORT, () => {
+      console.log(`🚀 Server is running on http://localhost:${PORT}`);
+    });
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
-app.use(cookieParser());
+    // If server fails to bind or crashes ==> Port already in use
+    server.on("error", (error) => {
+      console.error("❌ Server error:", error);
+      throw new ApiError(500, "Server failed to start");
+    });
 
-// ✅ Configure express-session
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "defaultSecret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === "production", // true when deployed with HTTPS
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-    },
-  })
-);
+    // when you press Ctrl+C in the terminal to interrupt the process SIGINT -> Signal Interrupt.
+    process.on("SIGINT", () => {
+      console.log("🛑 SIGINT received. Closing server.");
+      server.close(() => process.exit(0));
+    });
 
-// ✅ Initialize passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+    // process to request graceful termination. allows cleanup before exiting. SIGTERM -> Signal Terminate
+    process.on("SIGTERM", () => {
+      console.log("🛑 SIGTERM received. Closing server.");
+      server.close(() => process.exit(0));
+    });
+  } catch (err) {
+    console.error("❌ Startup error:", err);
+    process.exit(1);
+  }
+};
 
-// Google OAuth strategy
-strategy(app);
-
-// Routes
-import userRouter from "./routes/user.routes.js";
-import transcribe from "./routes/transcribe.routes.js";
-
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/audio", transcribe);
-
-export { app };
+startServer();

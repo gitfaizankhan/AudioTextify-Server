@@ -2,8 +2,8 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import session from "express-session"; // ✅ Add this
-import passport from "passport"; // ✅ Needed in main file too
+import session from "express-session";
+import passport from "passport";
 
 import strategy from "./utils/googleStrategy.js";
 
@@ -11,10 +11,18 @@ dotenv.config({ quiet: true });
 
 const app = express();
 
-// cors implementation
+// ✅ Allow multiple origins from .env
+const allowedOrigins = process.env.ORIGIN.split(",");
+
 app.use(
   cors({
-    origin: process.env.ORIGIN,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
@@ -27,11 +35,11 @@ app.use(cookieParser());
 // ✅ Configure express-session
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "defaultSecret", // secure in .env
+    secret: process.env.SESSION_SECRET || "defaultSecret",
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // true in production with HTTPS
+      secure: process.env.NODE_ENV === "production", // true when deployed with HTTPS
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
