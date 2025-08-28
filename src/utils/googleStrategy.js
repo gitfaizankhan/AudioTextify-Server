@@ -13,7 +13,7 @@ const strategy = (app) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: process.env.GOOGLE_CALLBACK,
+        callbackURL: "https://audiotextify-server.onrender.com/api/v1/auth/google/callback",
       },
       (accessToken, refreshToken, profile, done) => {
         return done(null, profile);
