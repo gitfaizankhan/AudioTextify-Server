@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -6,12 +7,14 @@ import passport from "passport"; // ✅ Needed in main file too
 
 import strategy from "./utils/googleStrategy.js";
 
+dotenv.config({ quiet: true });
+
 const app = express();
 
 // cors implementation
 app.use(
   cors({
-    origin: "https://audio-textify-client.vercel.app", // frontend url
+    origin: process.env.ORIGIN,
     credentials: true,
   })
 );
