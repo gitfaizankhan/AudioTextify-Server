@@ -44,7 +44,7 @@ const strategy = (app) => {
     }),
     googleAuth,
     async (req, res, next) => {
-      res.redirect(process.env.SUCCESS_URL);
+      res.redirect("https://audio-textify-client.vercel.app/profile");
     }
   );
 };
