@@ -11,9 +11,6 @@ dotenv.config({ quiet: true });
 
 const app = express();
 
-// ✅ Allow multiple origins from .env
-const allowedOrigins = process.env.ORIGIN.split(",");
-
 app.use(
   cors({
     origin: (origin, callback) => {
